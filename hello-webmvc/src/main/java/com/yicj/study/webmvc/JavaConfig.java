@@ -1,5 +1,6 @@
 package com.yicj.study.webmvc;
 
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -7,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
  * @date 2023/10/15 11:40
  */
 @Configuration
+@ComponentScan({
+    "com.yicj.study.webmvc.service"
+})
 public class JavaConfig {
 
 }
