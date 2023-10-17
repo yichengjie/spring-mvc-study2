@@ -1,3 +1,41 @@
+#### 实战笔记
+1. 编写Mvc配置类
+    ```java
+    @Configuration
+    @EnableWebMvc
+    @ComponentScan("com.yicj.study.webmvc.controller")
+    public class WebConfig {
+    }
+    ```
+2. 编写App配置类
+   ```java
+   @Configuration
+   @ComponentScan("com.yicj.study.webmvc.service")
+   public class AppConfig {
+   }
+   ```
+3. 编写Java注解MVC启动类（WebApplicationInitializer接口实现类）
+   ```java
+   public class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+      @Override
+      protected Class<?>[] getRootConfigClasses() {
+         return new Class[]{AppConfig.class};
+      }
+      @Override
+      protected Class<?>[] getServletConfigClasses() {
+         return new Class[]{WebConfig.class};
+      }
+      @Override
+      protected String[] getServletMappings() {
+         return new String[]{"/"};
+      }
+      @Override
+      protected Filter[] getServletFilters() {
+         return new Filter[]{new CharacterEncodingFilter("utf-8", true)};
+      }
+   }
+   ```
+#### 原理分析
 1. servlet提供API: ServletContainerInitializer, 其中SpringServletContainerInitializer继承ServletContainerInitializer
     ```java
     @HandlesTypes(WebApplicationInitializer.class)

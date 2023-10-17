@@ -1,6 +1,6 @@
 package com.yicj.study.webmvc.conf;
 
-import com.yicj.study.webmvc.JavaConfig;
+import com.yicj.study.webmvc.AppConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -11,11 +11,9 @@ import javax.servlet.Filter;
  * @date 2023/10/15 11:37
  */
 public class MvcWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
-
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{JavaConfig.class};
+        return new Class[]{AppConfig.class};
     }
 
     @Override
