@@ -1,6 +1,6 @@
 package com.yicj.study.webmvc.service;
 
-import com.yicj.study.webmvc.JavaConfig;
+import com.yicj.study.webmvc.AppConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 @Slf4j
 @RunWith(SpringRunner.class)
 //@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = JavaConfig.class)
+@ContextConfiguration(classes = AppConfig.class)
 public class HelloService2Test {
 
     @Autowired
