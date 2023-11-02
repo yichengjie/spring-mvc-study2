@@ -35,29 +35,13 @@
       }
    }
    ```
-#### 原理分析
-1. servlet提供API: ServletContainerInitializer, 其中SpringServletContainerInitializer继承ServletContainerInitializer
-    ```java
-    @HandlesTypes(WebApplicationInitializer.class)
-    public class SpringServletContainerInitializer implements ServletContainerInitializer {
-        @Override
-        public void onStartup(@Nullable Set<Class<?>> webAppInitializerClasses, ServletContext servletContext)
-                throws ServletException {
-            List<WebApplicationInitializer> initializers = new ArrayList<>(webAppInitializerClasses.size());
-                for (Class<?> waiClass : webAppInitializerClasses) {
-                    if (!waiClass.isInterface() && !Modifier.isAbstract(waiClass.getModifiers()) &&
-                            WebApplicationInitializer.class.isAssignableFrom(waiClass)) {
-                       initializers.add((WebApplicationInitializer)
-                                    ReflectionUtils.accessibleConstructor(waiClass).newInstance());
-                    }
-                }
-            servletContext.log(initializers.size() + " Spring WebApplicationInitializers detected on classpath");
-            AnnotationAwareOrderComparator.sort(initializers);
-            for (WebApplicationInitializer initializer : initializers) {
-                initializer.onStartup(servletContext);
-            }
-        }
-    }
-    ```
-2. AbstractAnnotationConfigDispatcherServletInitializer的入口是onStartup方法
-3. DispatcherServlet的入口是init方法
+#### 启动流程与配置加载
+1. Servlet提供API: ServletContainerInitializer是容器启动的入口
+2. 其中SpringServletContainerInitializer继承ServletContainerInitializer，启动时会回调WebApplicationInitializer
+3. AbstractAnnotationConfigDispatcherServletInitializer继承WebApplicationInitializer并实现了onStartup方法
+4. 在步骤2的onStartup方法中初始化了SpringRoot根容器与SpringMvc容器
+5. 在构建SpringMvc容器的同时初始化了DispatcherServlet类，并自动回调init方法
+6. FrameworkServlet#initServletBean设置Spring根容器与SpringMvc容器的父子关系，并执行configureAndRefreshWebApplicationContext刷新
+7. 容器启动完成通过ContextRefreshListener事件监听回调FrameworkServlet#onApplicationEvent方法
+8. 在上一步的onApplicationEvent中调用DispatcherServlet#onRefresh(event.getApplicationContext())
+9. DispatcherServlet#initStrategies初始化SpringMvc相关的组件
