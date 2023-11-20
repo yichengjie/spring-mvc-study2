@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>hello-webmvc</module>
+        <module>hello-world</module>
     </modules>
 
     <groupId>com.yicj.study</groupId>
