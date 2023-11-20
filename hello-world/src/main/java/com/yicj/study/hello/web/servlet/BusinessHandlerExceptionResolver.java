@@ -4,6 +4,7 @@ import com.yicj.study.hello.exception.BusinessException;
 import com.yicj.study.hello.exception.ParamException;
 import com.yicj.study.hello.web.vo.RestResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Component
-public class BusinessHandlerExceptionResolver implements HandlerExceptionResolver {
+public class BusinessHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
+
+    private int order = 0;
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
@@ -48,5 +51,10 @@ public class BusinessHandlerExceptionResolver implements HandlerExceptionResolve
             mv = new ModelAndView("jsonView", result.toMap());
         }
         return mv;
+    }
+
+    @Override
+    public int getOrder() {
+        return order -1;
     }
 }
